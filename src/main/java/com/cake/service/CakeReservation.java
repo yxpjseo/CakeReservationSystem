@@ -56,18 +56,10 @@ public class CakeReservation {
         System.out.print("\n픽업 날짜를 입력해주세요 (예: 2025-06-15): ");
         String date = sc.nextLine();
 
-        System.out.println("\n[ 픽업 시간 선택 ]\n10시, 11시, ..., 17시");
-        System.out.print("픽업 시간을 입력해주세요 (예: 14): ");
-        int time = Integer.parseInt(sc.nextLine());
-
-        //  예약 가능 여부 확인
-        if (!isPickupAvailable(date, time)) {
-            System.out.println("이미 예약이 완료된 시간입니다. 다른 시간을 선택해주세요.");
-            return;
-        }
-
-        //  주문 등록
+        //  주문 등록 + 픽업시간 입력
         try (Connection conn = DButil.getConnection()) {
+
+            int time = promptPickupTime(sc, date, conn); // 픽업시간 통합 메서드 호출
             conn.setAutoCommit(false);
 
             int totalPrice = 0;
@@ -200,6 +192,29 @@ public class CakeReservation {
         } catch (SQLException e) {
             return false;
         }
+    }
+
+    // 예약 가능한 시간 반복 입력 (공용 유틸 메서드)
+    public static int promptPickupTime(Scanner sc, String date, Connection conn) throws SQLException {
+        int time;
+        while (true) {
+            System.out.println("\n[ 픽업 시간 선택 ]\n10시, 11시, ..., 17시");
+            System.out.print("픽업 시간을 입력해주세요 (예: 14): ");
+            time = Integer.parseInt(sc.nextLine());
+
+            String sql = SQLLoader.load("check_pickup_availability.sql");
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setDate(1, java.sql.Date.valueOf(date));
+                pstmt.setInt(2, time);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next() && rs.getInt("cnt") == 0) {
+                    break;
+                } else {
+                    System.out.println("❌ 이미 예약된 시간입니다. 다시 선택해주세요.");
+                }
+            }
+        }
+        return time;
     }
 }
 

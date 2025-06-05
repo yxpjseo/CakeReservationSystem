@@ -7,21 +7,17 @@ import com.cake.util.SQLLoader;
 
 public class ChangeReservation {
 
-    //예약 조회([pick_ups] status==false만)
     public void showUserReservations(Connection conn, int userId, Scanner scanner) throws SQLException {
         String sql = SQLLoader.load("select_user_reservations.sql");
-        String userName="";
 
         Map<Integer, List<String>> cakeMap = new LinkedHashMap<>();
         Map<Integer, Integer> candlesMap = new HashMap<>();
         Map<Integer, String> pickupMap = new HashMap<>();
 
-        //DB에서 정보 가져옴
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                if (userName.isEmpty()) userName = rs.getString("user_name");
                 int orderId = rs.getInt("order_id");
                 String cakeInfo = rs.getString("cake_name") + " " + rs.getInt("count") + "개";
 
@@ -31,13 +27,12 @@ public class ChangeReservation {
             }
         }
 
-        //정보 view
-        System.out.println("\n" +userName + "님 예약 현황입니다.\n");
+        System.out.println("예약 현황입니다.\n");
         for (int orderId : cakeMap.keySet()) {
             System.out.println("[주문번호: " + orderId + "]");
             System.out.println("- 케이크: " + String.join(", ", cakeMap.get(orderId)));
             System.out.println("- 초 수량: " + candlesMap.get(orderId) + "개");
-            System.out.println("- 픽업 일시: " + pickupMap.get(orderId));
+            System.out.println("- 피커브 일시: " + pickupMap.get(orderId));
             System.out.println();
         }
 
@@ -51,16 +46,15 @@ public class ChangeReservation {
         else if (menu == 2) cancelReservation(conn, scanner);
     }
 
-    //예약 변경
     public void updateReservation(Connection conn, Scanner scanner) throws SQLException {
         System.out.print("\n주문번호를 입력하세요 >> ");
         int orderId = Integer.parseInt(scanner.nextLine());
         showReservationDetail(conn, orderId);
 
-        //당일 변경 불가
         String query = SQLLoader.load("select_reservation_detail.sql");
         LocalDate pickupDate = null;
         int pickupTime = 0;
+
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
@@ -69,6 +63,7 @@ public class ChangeReservation {
                 pickupTime = rs.getInt("pickup_time");
             }
         }
+
         if (pickupDate.equals(LocalDate.now())) {
             System.out.println("❌ 픽업 당일에는 예약 변경이 불가능합니다.");
             return;
@@ -77,21 +72,15 @@ public class ChangeReservation {
         System.out.println("\n예약 변경은 다음 항목만 가능합니다:");
         System.out.println("- 픽업 시간 변경\n- 초 수량 변경");
         System.out.println("\n📌 픽업 날짜나 케이크 종류 변경은 예약 취소 후 새로 예약해주세요.\n");
-        System.out.println("\n1. 픽업 시간 변경\n2. 초 수량 변경\n0. 홈 메뉴로 돌아가기");
+        System.out.println("1. 픽업 시간 변경\n2. 초 수량 변경\n0. 홈 메뉴로 돌아가기");
         System.out.print("선택 >> ");
         int choice = Integer.parseInt(scanner.nextLine());
 
         if (choice == 1) {
-            //픽업 시간 변경
             System.out.printf("\n현재 예약된 날짜: %s\n", pickupDate);
             System.out.printf("예약된 시간: %02d시\n", pickupTime);
 
-            System.out.print("변경할 픽업 시간을 입력하세요 (10~17) >> ");
-            int newTime = Integer.parseInt(scanner.nextLine());
-            if (newTime < 10 || newTime > 17) {
-                System.out.println("❌ 픽업이 불가능한 시간대입니다.");
-                return;
-            }
+            int newTime = CakeReservation.promptPickupTime(scanner, pickupDate.toString(), conn);
             try (PreparedStatement ps = conn.prepareStatement(SQLLoader.load("update_pickup_time.sql"))) {
                 ps.setInt(1, newTime);
                 ps.setInt(2, orderId);
@@ -102,7 +91,7 @@ public class ChangeReservation {
             updateCandles(conn, scanner, orderId);
         }
     }
-    //주문상세 view
+
     public void showReservationDetail(Connection conn, int orderId) throws SQLException {
         String sql = SQLLoader.load("select_reservation_detail.sql");
 
@@ -117,12 +106,10 @@ public class ChangeReservation {
             boolean found = false;
             while (rs.next()) {
                 found = true;
-                //케이크 항목 누적해서 저장
                 String cakeName = rs.getString("cake_name");
                 int count = rs.getInt("count");
                 cakeItems.add(cakeName + " " + count + "개");
 
-                //초,날짜,시간 저장
                 if (candles == -1) {
                     candles = rs.getInt("candles");
                     pickupDate = rs.getDate("pickup_date").toString();
@@ -141,9 +128,8 @@ public class ChangeReservation {
             System.out.println("- 픽업 일시: " + pickupDate + " " + pickupTime);
         }
     }
-    //초 개수 변경
+
     public void updateCandles(Connection conn, Scanner scanner, int orderId) throws SQLException {
-        // 현재 초 개수 조회
         String sql = SQLLoader.load("select_reservation_detail.sql");
         int currentCandles = -1;
 
@@ -155,7 +141,6 @@ public class ChangeReservation {
             }
         }
 
-        // 현재 초 개수 출력
         System.out.println("현재 초 개수: " + currentCandles + "개");
         System.out.print("변경할 초 개수를 입력하세요. (0 이상 숫자) >> ");
         int newCandles = Integer.parseInt(scanner.nextLine());
@@ -165,7 +150,6 @@ public class ChangeReservation {
             return;
         }
 
-        // UPDATE 수행 (트랜잭션 사용 가능)
         String updateSQL = SQLLoader.load("update_candles.sql");
         try (PreparedStatement ps = conn.prepareStatement(updateSQL)) {
             ps.setInt(1, newCandles);
@@ -175,12 +159,10 @@ public class ChangeReservation {
         }
     }
 
-    //예약 취소
     public void cancelReservation(Connection conn, Scanner scanner) throws SQLException {
         System.out.print("\n주문번호를 입력하세요 >> ");
         int orderId = Integer.parseInt(scanner.nextLine());
 
-        //상세 정보 출력
         String detailSql = SQLLoader.load("select_reservation_detail.sql");
 
         try (PreparedStatement ps = conn.prepareStatement(detailSql)) {
@@ -193,7 +175,6 @@ public class ChangeReservation {
                 items.add(rs.getString("cake_name") + " " + rs.getInt("count") + "개");
                 pickupDate = rs.getDate("pickup_date").toString();
                 pickupTime = rs.getInt("pickup_time") + ":00";
-                // rs.getInt("candles"); ← 이건 그냥 무시하면 됨
             }
 
             if (items.isEmpty()) {
@@ -209,12 +190,11 @@ public class ChangeReservation {
         String confirm = scanner.nextLine().trim().toUpperCase();
         if (!confirm.equals("Y")) return;
 
-        //order_id에 대한 예약 튜플 삭제
         conn.setAutoCommit(false);
         try (
                 PreparedStatement deletePick = conn.prepareStatement(SQLLoader.load("delete_pickups_by_orderId.sql"));
                 PreparedStatement deleteItems = conn.prepareStatement(SQLLoader.load("delete_order_items_by_orderId.sql"));
-                PreparedStatement deleteOrder = conn.prepareStatement(SQLLoader.load("delete_order_by_orderId.sql"));
+                PreparedStatement deleteOrder = conn.prepareStatement(SQLLoader.load("delete_order_by_orderId.sql"))
         ) {
             deletePick.setInt(1, orderId);
             deletePick.executeUpdate();
@@ -236,4 +216,3 @@ public class ChangeReservation {
         }
     }
 }
-

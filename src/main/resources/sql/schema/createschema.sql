@@ -2,7 +2,7 @@
 CREATE TABLE users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,  -- id 자동 증가
   user_name VARCHAR(30),
-  phone_num CHAR(13),
+  phone_num CHAR(11),
   email VARCHAR(30),
   pw CHAR(4)
 );

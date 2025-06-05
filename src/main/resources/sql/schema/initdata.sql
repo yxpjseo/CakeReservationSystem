@@ -1,15 +1,15 @@
 -- [users]
 INSERT INTO users (user_name, phone_num, email, pw) VALUES
-                                                        ('Olivia', '010-1234-5678', 'olivia.kim01@gmail.com', '7261'),
-                                                        ('Ethan', '010-9876-5432', 'ethan.lee87@naver.com', '4938'),
-                                                        ('Sophia', '010-2468-1357', 'sophia_park22@daum.net', '1507'),
-                                                        ('Liam', '010-1111-2222', 'liam.jung98@outlook.com', '8023'),
-                                                        ('Chloe', '010-3690-1470', 'chloe.song11@gmail.com', '3479'),
-                                                        ('Ella', '010-5555-6666', 'ella.han03@yahoo.com', '6150'),
-                                                        ('Mason', '010-0824-1937', 'mason.kang55@hanmail.net', '9842'),
-                                                        ('Lily', '010-4321-8765', 'lily_yoon88@gmail.com', '2386'),
-                                                        ('Aiden', '010-2020-3030', 'aiden.ryu19@icloud.com', '4701'),
-                                                        ('Noah', '010-1010-9090', 'noah_choi77@naver.com', '5913');
+                                                        ('Olivia', '01012345678', 'olivia.kim01@gmail.com', '7261'),
+                                                        ('Ethan', '01098765432', 'ethan.lee87@naver.com', '4938'),
+                                                        ('Sophia', '01024681357', 'sophia_park22@daum.net', '1507'),
+                                                        ('Liam', '01011112222', 'liam.jung98@outlook.com', '8023'),
+                                                        ('Chloe', '01036901470', 'chloe.song11@gmail.com', '3479'),
+                                                        ('Ella', '01055556666', 'ella.han03@yahoo.com', '6150'),
+                                                        ('Mason', '01008241937', 'mason.kang55@hanmail.net', '9842'),
+                                                        ('Lily', '01043218765', 'lily_yoon88@gmail.com', '2386'),
+                                                        ('Aiden', '01020203030', 'aiden.ryu19@icloud.com', '4701'),
+                                                        ('Noah', '01010109090', 'noah_choi77@naver.com', '5913');
 
 -- [cakes]
 INSERT INTO cakes (cake_name, size, price, stock) VALUES
