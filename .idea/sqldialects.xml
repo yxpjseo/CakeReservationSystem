@@ -6,7 +6,7 @@
     <file url="file://$PROJECT_DIR$/src/main/resources/sql/operation/select_reservation_detail.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/sql/operation/select_user_by_userId.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/sql/operation/update_pickup_time.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/sql/schema/create.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/sql/schema/createschema.sql" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>

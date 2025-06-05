@@ -17,8 +17,9 @@ public class Main {
                 user_name,
                 password)) {
 
-            runSQL(con, "src/main/resources/sql/schema/create.sql");
-            runSQL(con, "src/main/resources/sql/schema/data.sql");
+            runSQL(con, "src/main/resources/sql/schema/dropschema.sql");
+            runSQL(con, "src/main/resources/sql/schema/createschema.sql");
+            runSQL(con, "src/main/resources/sql/schema/initdata.sql");
 
             System.out.println("✅ DB 초기화 완료!");
 

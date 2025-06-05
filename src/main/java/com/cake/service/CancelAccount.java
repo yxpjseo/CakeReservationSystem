@@ -39,7 +39,7 @@ public class CancelAccount {
                 PreparedStatement deleteItems = conn.prepareStatement(
                         SQLLoader.load("delete_items_by_user.sql"));
                 PreparedStatement deleteOrders = conn.prepareStatement(
-                        SQLLoader.load("delete_orders_by_user.sql"));
+                        SQLLoader.load("delete_order_by_user.sql"));
                 PreparedStatement deleteUser = conn.prepareStatement(
                         SQLLoader.load("delete_user.sql"));
         ) {

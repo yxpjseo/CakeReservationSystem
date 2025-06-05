@@ -97,6 +97,18 @@ public class CakeReservation {
             }
             itemStmt.executeBatch();
 
+            // 재고 차감
+            PreparedStatement updateStockStmt = conn.prepareStatement(
+                    SQLLoader.load("update_cake_stock.sql")
+            );
+            for (Map.Entry<String, Integer> entry : cart.entrySet()) {
+                updateStockStmt.setInt(1, entry.getValue());   // 수량
+                updateStockStmt.setString(2, entry.getKey());  // 케이크명
+                updateStockStmt.addBatch();
+            }
+            updateStockStmt.executeBatch();
+
+
             // pick_ups 삽입
             PreparedStatement pickupStmt = conn.prepareStatement(SQLLoader.load("insert_pickup.sql"));
             pickupStmt.setDate(1, java.sql.Date.valueOf(date));
@@ -106,14 +118,39 @@ public class CakeReservation {
 
             conn.commit();
 
-            // 주문 확인 출력
-            System.out.println("\n[ 주문번호: " + orderId + " ]");
-            for (Map.Entry<String, Integer> e : cart.entrySet()) {
-                System.out.printf("- 케이크: %s %d개\n", e.getKey(), e.getValue());
+            // 주문 확인 출력 (DB에서 받아온 정보 기반)
+            String receiptSql = SQLLoader.load("select_order_receipt.sql");
+            try (PreparedStatement receiptStmt = conn.prepareStatement(receiptSql)) {
+                receiptStmt.setInt(1, orderId);
+                ResultSet rs = receiptStmt.executeQuery();
+
+                System.out.println("\n[ 주문번호: " + orderId + " ]");
+                System.out.println("-------------------------------------");
+                System.out.printf("%-15s %4s %9s %9s\n", "케이크명", "수량", "단가", "금액");
+                System.out.println("-------------------------------------");
+
+                int totalFromReceipt = 0;
+                while (rs.next()) {
+                    String cakeName = rs.getString("cake_name");
+                    int count = rs.getInt("count");
+                    int price = rs.getInt("price");
+                    int itemTotal = count * price;
+                    totalFromReceipt += itemTotal;
+
+                    System.out.printf("%-15s %3d개 %,9d원 %,9d원\n",
+                            cakeName, count, price, itemTotal);
+                }
+
+                System.out.println("-------------------------------------");
+                System.out.println("- 초 수량: " + candles + "개");
+                System.out.printf("- 픽업 일시: %s %02d:00\n", date, time);
+                System.out.printf("총 결제 금액: %,d원\n", totalFromReceipt);
+                System.out.println("\n예약이 완료되었습니다! 감사합니다 :)");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            System.out.println("- 초 수량: " + candles + "개");
-            System.out.printf("- 픽업 일시: %s %02d:00\n", date, time);
-            System.out.println("\n예약이 완료되었습니다! 감사합니다 :)");
+
 
         } catch (SQLException e) {
             e.printStackTrace();
