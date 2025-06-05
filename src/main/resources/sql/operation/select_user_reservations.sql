@@ -1,9 +1,5 @@
--- 사용자의 예약 중 status = false 인 예약 목록 조회
-SELECT o.order_id, u.user_name, oi.cake_name, oi.count, o.candles,
-       p.pickup_date, p.pickup_time
-FROM orders o
-         JOIN users u ON o.user_id = u.user_id
-         JOIN order_items oi ON o.order_id = oi.order_id
-         JOIN pick_ups p ON o.order_id = p.order_id
-WHERE o.user_id = ? AND p.status = FALSE
-ORDER BY o.order_id;
+-- VIEW reservation_status 사용
+SELECT order_id, user_name, cake_name, count, candles, pickup_date, pickup_time
+FROM reservation_status
+WHERE user_id = ? AND status = FALSE
+ORDER BY order_id;

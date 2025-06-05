@@ -7,5 +7,5 @@ DROP TABLE IF EXISTS users;
 
 -- 뷰 삭제
 DROP VIEW IF EXISTS user_info_for_users;
-DROP VIEW IF EXISTS cakes_total_ordered;
+DROP VIEW IF EXISTS reservation_status;
 

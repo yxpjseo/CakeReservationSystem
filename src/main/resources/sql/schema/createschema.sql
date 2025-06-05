@@ -50,12 +50,17 @@ CREATE VIEW user_info_for_users AS
 SELECT user_id, user_name, phone_num, email
 FROM users;
 
--- View: 케이크 누적 판매량
-CREATE VIEW cakes_total_ordered AS 
-SELECT c.cake_name, c.size, SUM(oi.count) AS total_ordered
-FROM cakes c 
-JOIN order_items oi ON c.cake_name = oi.cake_name
-GROUP BY c.cake_name;
+-- View: 예약 확인
+CREATE OR REPLACE VIEW reservation_status AS
+SELECT
+    o.user_id, o.order_id, u.user_name,
+    oi.cake_name, oi.count, o.candles,
+    p.pickup_date, p.pickup_time, p.status
+FROM orders o
+         JOIN users u ON o.user_id = u.user_id
+         JOIN order_items oi ON o.order_id = oi.order_id
+         JOIN pick_ups p ON o.order_id = p.order_id;
+
 
 -- Index: 케이크 사이즈 검색 최적화
 CREATE INDEX idx_cake_size ON cakes(size);
