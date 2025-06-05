@@ -9,16 +9,7 @@ public class ChangeReservation {
 
     //예약 조회([pick_ups] status==false만)
     public void showUserReservations(Connection conn, int userId, Scanner scanner) throws SQLException {
-        String sql = """
-        SELECT o.order_id, o.candles, p.pickup_date, p.pickup_time,
-       oi.cake_name, oi.count, u.user_name
-				FROM orders o
-				JOIN pick_ups p ON o.order_id = p.order_id
-				JOIN order_items oi ON o.order_id = oi.order_id
-				JOIN users u ON o.user_id = u.user_id
-				WHERE o.user_id = ? AND p.status = FALSE
-				ORDER BY o.order_id;
-    """;
+        String sql = SQLLoader.load("select_user_reservations.sql");
         String userName="";
 
         Map<Integer, List<String>> cakeMap = new LinkedHashMap<>();

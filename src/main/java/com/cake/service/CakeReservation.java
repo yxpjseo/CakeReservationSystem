@@ -11,7 +11,7 @@ public class CakeReservation {
 
         // 케이크 메뉴 출력
         try (Connection conn = DButil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQLLoader.load("sql/select_all_cakes.sql"));
+             PreparedStatement ps = conn.prepareStatement(SQLLoader.load("select_all_cakes.sql"));
              ResultSet rs = ps.executeQuery()) {
 
             System.out.println("\n[ 케이크 메뉴 ]");
@@ -50,10 +50,10 @@ public class CakeReservation {
         }
 
 
-        System.out.print("초는 총 몇 개 필요하신가요?: ");
+        System.out.print("\n초는 총 몇 개 필요하신가요?: ");
         int candles = Integer.parseInt(sc.nextLine());
 
-        System.out.print("픽업 날짜를 입력해주세요 (예: 2025-06-15): ");
+        System.out.print("\n픽업 날짜를 입력해주세요 (예: 2025-06-15): ");
         String date = sc.nextLine();
 
         System.out.println("\n[ 픽업 시간 선택 ]\n10시, 11시, ..., 17시");
@@ -76,7 +76,7 @@ public class CakeReservation {
             }
 
             // orders 테이블 삽입
-            PreparedStatement orderStmt = conn.prepareStatement(SQLLoader.load("sql/insert_order.sql"), Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement orderStmt = conn.prepareStatement(SQLLoader.load("insert_order.sql"), Statement.RETURN_GENERATED_KEYS);
             orderStmt.setInt(1, userId);
             orderStmt.setInt(2, totalPrice);
             orderStmt.setDate(3, java.sql.Date.valueOf(date));
@@ -88,7 +88,7 @@ public class CakeReservation {
             int orderId = keyRs.getInt(1);
 
             // order_items 삽입
-            PreparedStatement itemStmt = conn.prepareStatement(SQLLoader.load("sql/insert_order_item.sql"));
+            PreparedStatement itemStmt = conn.prepareStatement(SQLLoader.load("insert_order_item.sql"));
             for (Map.Entry<String, Integer> entry : cart.entrySet()) {
                 itemStmt.setInt(1, orderId);
                 itemStmt.setString(2, entry.getKey());
@@ -98,7 +98,7 @@ public class CakeReservation {
             itemStmt.executeBatch();
 
             // pick_ups 삽입
-            PreparedStatement pickupStmt = conn.prepareStatement(SQLLoader.load("sql/insert_pickup.sql"));
+            PreparedStatement pickupStmt = conn.prepareStatement(SQLLoader.load("insert_pickup.sql"));
             pickupStmt.setDate(1, java.sql.Date.valueOf(date));
             pickupStmt.setInt(2, time);
             pickupStmt.setInt(3, orderId);
@@ -127,7 +127,7 @@ public class CakeReservation {
 
     // 가격 조회
     private int getPrice(String cake) {
-        String sql = SQLLoader.load("sql/get_cake_price.sql");
+        String sql = SQLLoader.load("get_cake_price.sql");
         try (Connection conn = DButil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, cake);
@@ -140,7 +140,7 @@ public class CakeReservation {
 
     //  재고 확인
     private boolean checkStock(String cake, int qty) {
-        String sql = SQLLoader.load("sql/check_cake_stock.sql");
+        String sql = SQLLoader.load("check_cake_stock.sql");
         try (Connection conn = DButil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, cake);
@@ -153,7 +153,7 @@ public class CakeReservation {
 
     //  픽업 시간 중복 확인
     private boolean isPickupAvailable(String date, int time) {
-        String sql = SQLLoader.load("sql/check_pickup_availability.sql");
+        String sql = SQLLoader.load("check_pickup_availability.sql");
         try (Connection conn = DButil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDate(1, java.sql.Date.valueOf(date));
