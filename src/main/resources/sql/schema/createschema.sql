@@ -39,7 +39,7 @@ CREATE TABLE order_items (
 CREATE TABLE pick_ups (
   pickup_id INT AUTO_INCREMENT PRIMARY KEY,
   pickup_date DATE,
-  pickup_time INT CHECK (pickup_time BETWEEN 11 AND 19),  -- 11시~19시
+  pickup_time INT CHECK (pickup_time BETWEEN 10 AND 19),  -- 11시~19시
   order_id INT,
   status BOOLEAN,
   FOREIGN KEY (order_id) REFERENCES orders(order_id)

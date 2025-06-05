@@ -1,5 +1,6 @@
 package com.cake.app;
 
+import com.cake.app.*;
 import com.cake.service.*;
 import com.cake.util.DButil;
 
@@ -7,8 +8,8 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 public class appMain {
-
     public static void main(String[] args) {
+        Main.main(args);
         Scanner sc = new Scanner(System.in);
         SignUp signUp = new SignUp();
         Login login = new Login();

@@ -28,10 +28,6 @@ public class CakePopularityBySize {
                 System.out.println(rank++ + ". " + cake);
             }
 
-            System.out.println("\n0. 홈 메뉴로 돌아가기");
-            System.out.print("선택 >> ");
-            sc.nextLine();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
