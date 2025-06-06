@@ -1,22 +1,17 @@
 package com.cake.app;
 
+import com.cake.util.DButil;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args) {
-        String server = "localhost:3306";
-        String database = "cake_db";
-        String user_name = "root";
-        String password = "1234";
-
-        try (Connection con = DriverManager.getConnection(
-                "jdbc:mysql://" + server + "/" + database + "?allowPublicKeyRetrieval=true&useSSL=false",
-                user_name,
-                password)) {
-
+        try (Connection con = DButil.getConnection()) {
             runSQL(con, "src/main/resources/sql/schema/dropschema.sql");
             runSQL(con, "src/main/resources/sql/schema/createschema.sql");
             runSQL(con, "src/main/resources/sql/schema/initdata.sql");
