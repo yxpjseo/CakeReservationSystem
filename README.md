@@ -33,7 +33,7 @@
 
 ## 🧪 SQL 스크립트
 
-### 📂 `resources/schema`
+### 📂 `resources/sql/schema`
 - `createschema.sql`: 테이블 및 뷰 생성
 - `dropschema.sql`: 전체 테이블 삭제
 - `initdata.sql`: 샘플 유저, 케이크, 예약 데이터 삽입
