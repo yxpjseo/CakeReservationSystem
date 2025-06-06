@@ -200,18 +200,28 @@ public class CakeReservation {
         while (true) {
             System.out.println("\n[ 픽업 시간 선택 ]\n10시, 11시, ..., 17시");
             System.out.print("픽업 시간을 입력해주세요 (예: 14): ");
-            time = Integer.parseInt(sc.nextLine());
+            try {
+                time = Integer.parseInt(sc.nextLine());
 
-            String sql = SQLLoader.load("check_pickup_availability.sql");
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setDate(1, java.sql.Date.valueOf(date));
-                pstmt.setInt(2, time);
-                ResultSet rs = pstmt.executeQuery();
-                if (rs.next() && rs.getInt("cnt") == 0) {
-                    break;
-                } else {
-                    System.out.println("❌ 이미 예약된 시간입니다. 다시 선택해주세요.");
+
+                if (time < 10 || time > 17) {
+                    System.out.println("영업 시간(10~17시)만 입력 가능합니다.");
+                    continue;
                 }
+
+                String sql = SQLLoader.load("check_pickup_availability.sql");
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setDate(1, java.sql.Date.valueOf(date));
+                    pstmt.setInt(2, time);
+                    ResultSet rs = pstmt.executeQuery();
+                    if (rs.next() && rs.getInt("cnt") == 0) {
+                        break;
+                    } else {
+                        System.out.println("이미 예약된 시간입니다. 다시 선택해주세요.");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("숫자만 입력해주세요.");
             }
         }
         return time;
