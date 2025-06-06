@@ -90,16 +90,50 @@ src/
 
 ## ▶️ 실행 방법
 
-1. **DB 구성**
-    ```bash
-    mysql -u [user] -p < schema/dropschema.sql
-    mysql -u [user] -p < schema/createschema.sql
-    mysql -u [user] -p < schema/initdata.sql
-    ```
+### 1️⃣ MySQL 서버 실행
 
-2. **애플리케이션 실행**
-    - `Main.java`: DB 초기화 자동 실행
-    - `appMain.java`: 메인 실행 → 콘솔 기반 메뉴 제공
+- 애플리케이션을 실행하기 전에 **MySQL 서버가 실행 중**이어야 합니다.
+- DB 접속 정보는 `DButil.java`에 정의되어 있으며, 비밀번호는 실행 중 **콘솔에서 직접 입력**받습니다.
+
+---
+
+### 2️⃣ 프로그램 실행
+
+```bash
+javac com/cake/app/appMain.java
+java com.cake.app.appMain
+```
+
+appMain을 실행하면 내부적으로 다음이 자동으로 수행됩니다:
+
+- Main.main() 호출 → 데이터베이스 초기화  
+  - 기존 스키마 삭제 (dropschema.sql)  
+  - 새 스키마 생성 (createschema.sql)  
+  - 샘플 데이터 삽입 (initdata.sql)  
+
+- 이 과정 중 **MySQL 비밀번호 입력을 요구하는 콘솔 창이 뜨며**, 입력 후 연결됩니다.  
+  - 비밀번호는 콘솔에 표시되지 않으며, 직접 타이핑해야 합니다.  
+
+- 초기화가 완료되면 **콘솔 메뉴가 출력**되어 기능을 선택할 수 있습니다.
+
+---
+
+### 3️⃣ 콘솔 기능
+
+- 회원가입 / 로그인  
+- 케이크 목록 조회 및 예약  
+- 예약 수정 / 취소 / 확인  
+- 회원탈퇴  
+- 인기 케이크 통계 확인  
+
+---
+
+### ⚠️ 주의사항
+
+- 실행 시 기존 DB가 초기화되므로 **중요 데이터는 백업 후 진행**하세요.  
+- DB 연결 실패 시:
+  - MySQL 서버가 실행 중인지 확인
+  - 비밀번호를 정확히 입력했는지 확인
 
 ---
 
