@@ -8,37 +8,36 @@ Java 콘솔 기반의 케이크 예약 시스템입니다.
 
 ## 📁 폴더 구조
 📦 project-root
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── com/cake/
-│       │       ├── app/                  # 실행 및 초기화
-│       │       │   ├── Main.java
-│       │       │   └── appMain.java
-│       │       ├── service/              # 기능별 모듈
-│       │       │   ├── Login.java
-│       │       │   ├── SignUp.java
-│       │       │   ├── CakeReservation.java
-│       │       │   ├── CancelAccount.java
-│       │       │   ├── ChangeReservation.java
-│       │       │   ├── CheckUserInfo.java
-│       │       │   └── CakePopularityBySize.java
-│       │       └── util/                 # DB 유틸
-│       │           ├── DButil.java
-│       │           └── SQLLoader.java
-│       │
-│       └── resources/
-│           └── sql/
-│               ├── schema/               # DB 초기화 SQL
-│               │   ├── createschema.sql
-│               │   ├── dropschema.sql
-│               │   └── initdata.sql
-│               └── operation/            # 기능별 SQL
-│                   ├── insert_user.sql
-│                   ├── login_user.sql
-│                   ├── select_all_cakes.sql
-│                   └── ...
-
+src/
+├── main/
+│ ├── java/
+│ │ └── com/cake/
+│ │ ├── app/ # 시스템 실행 및 초기화
+│ │ │ ├── Main.java
+│ │ │ └── appMain.java
+│ │ ├── service/ # 기능별 서비스 클래스
+│ │ │ ├── Login.java
+│ │ │ ├── SignUp.java
+│ │ │ ├── CakeReservation.java
+│ │ │ ├── CancelAccount.java
+│ │ │ ├── ChangeReservation.java
+│ │ │ ├── CheckUserInfo.java
+│ │ │ └── CakePopularityBySize.java
+│ │ └── util/ # DB 유틸리티
+│ │ ├── DButil.java
+│ │ └── SQLLoader.java
+│ │
+│ └── resources/
+│ └── sql/
+│ ├── schema/ # DB 초기화용 스크립트
+│ │ ├── createschema.sql
+│ │ ├── dropschema.sql
+│ │ └── initdata.sql
+│ └── operation/ # 기능별 SQL 쿼리
+│ ├── insert_user.sql
+│ ├── login_user.sql
+│ ├── select_all_cakes.sql
+│ ├── ...
 
 ---
 
