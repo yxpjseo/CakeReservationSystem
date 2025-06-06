@@ -1,1 +1,0 @@
-DELETE FROM order_items WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?);

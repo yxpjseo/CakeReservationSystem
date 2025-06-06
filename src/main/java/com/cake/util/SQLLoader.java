@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class SQLLoader {
-    private static final String BASE_PATH = "sql/operation/";
+    private static final String BASE_PATH = "sql/";
 
     public static String load(String fileName) {
         String fullPath = BASE_PATH + fileName;

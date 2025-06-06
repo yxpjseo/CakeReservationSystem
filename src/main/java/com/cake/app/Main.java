@@ -8,18 +8,18 @@ import java.sql.*;
 public class Main {
     public static void main(String[] args) {
         String server = "localhost:3306";
-        String database = "cake_db";
+        String database = "cake_ordering";
         String user_name = "root";
-        String password = "1234";
+        String password = "happy1935";
 
         try (Connection con = DriverManager.getConnection(
                 "jdbc:mysql://" + server + "/" + database + "?allowPublicKeyRetrieval=true&useSSL=false",
                 user_name,
                 password)) {
 
-            runSQL(con, "src/main/resources/sql/schema/dropschema.sql");
-            runSQL(con, "src/main/resources/sql/schema/createschema.sql");
-            runSQL(con, "src/main/resources/sql/schema/initdata.sql");
+            runSQL(con, "src/main/resources/sql/dropschema.sql");
+            runSQL(con, "src/main/resources/sql/createschema.sql");
+            runSQL(con, "src/main/resources/sql/initdata.sql");
 
             System.out.println("✅ DB 초기화 완료!");
 
