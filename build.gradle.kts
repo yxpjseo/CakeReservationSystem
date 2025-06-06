@@ -18,3 +18,20 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "com.cake.app.appMain" // ← 본인의 메인 클래스
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get()
+            .filter { it.name.endsWith("jar") }
+            .map { zipTree(it) }
+    })
+}
