@@ -3,8 +3,8 @@ package com.cake.app;
 import com.cake.util.DButil;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,9 +12,9 @@ import java.sql.Statement;
 public class Main {
     public static void main(String[] args) {
         try (Connection con = DButil.getConnection()) {
-            runSQL(con, "src/main/resources/sql/schema/dropschema.sql");
-            runSQL(con, "src/main/resources/sql/schema/createschema.sql");
-            runSQL(con, "src/main/resources/sql/schema/initdata.sql");
+            runSQL(con, "sql/schema/dropschema.sql");
+            runSQL(con, "sql/schema/createschema.sql");
+            runSQL(con, "sql/schema/initdata.sql");
 
             System.out.println("✅ DB 초기화 완료!");
 
@@ -23,8 +23,13 @@ public class Main {
         }
     }
 
-    public static void runSQL(Connection conn, String path) throws IOException, SQLException {
-        String sql = Files.readString(Path.of(path));
+    public static void runSQL(Connection conn, String resourcePath) throws IOException, SQLException {
+        InputStream in = Main.class.getClassLoader().getResourceAsStream(resourcePath);
+        if (in == null) {
+            throw new IOException("❌ Resource not found: " + resourcePath);
+        }
+
+        String sql = new String(in.readAllBytes(), StandardCharsets.UTF_8);
         for (String stmt : sql.split(";")) {
             if (!stmt.trim().isEmpty()) {
                 try (Statement s = conn.createStatement()) {
