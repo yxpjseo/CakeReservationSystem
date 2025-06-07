@@ -93,6 +93,7 @@ src/
 ### 1️⃣ MySQL 서버 실행
 
 - 애플리케이션을 실행하기 전에 **MySQL 서버가 실행 중**이어야 합니다.
+- 또한  **'cake_db'**  데이터베이스가 사전에 존재해야 합니다. 만약 해당 데이터베이스가 존재하지 않을 시 “java.sql.SQLSyntaxErrorException: Unknown database 'cake_db'” 에러가 뜨게 됩니다.
 - DB 접속 정보는 `DButil.java`에 정의되어 있으며, 비밀번호는 실행 중 **콘솔에서 직접 입력**받습니다.
 
 ---
