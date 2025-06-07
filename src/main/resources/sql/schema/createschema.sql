@@ -62,5 +62,10 @@ FROM orders o
          JOIN pick_ups p ON o.order_id = p.order_id;
 
 
--- Index: 케이크 사이즈 검색 최적화
-CREATE INDEX idx_cake_size ON cakes(size);
+-- Indexes
+-- 회원가입 시 중복 확인, 로그인 시 조회
+CREATE UNIQUE INDEX idx_user_identity ON users(phone_num, email);
+-- 사용자별 주문 내역 조회
+CREATE INDEX idx_orders_user_id ON orders(user_id);
+-- 픽업시간 중복 여부 확인
+CREATE INDEX idx_pickup_datetime ON pick_ups(pickup_date, pickup_time);
