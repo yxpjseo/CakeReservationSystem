@@ -1,1 +1,4 @@
-DELETE FROM pick_ups WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?);
+DELETE p
+FROM pick_ups p
+         JOIN orders o ON p.order_id = o.order_id
+WHERE o.user_id = ?;

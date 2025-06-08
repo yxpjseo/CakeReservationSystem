@@ -150,7 +150,7 @@ public class ChangeReservation {
             return;
         }
 
-        String updateSQL = SQLLoader.load("update_candles.sql");
+        String updateSQL = SQLLoader.load("update_order_candles.sql");
         try (PreparedStatement ps = conn.prepareStatement(updateSQL)) {
             ps.setInt(1, newCandles);
             ps.setInt(2, orderId);

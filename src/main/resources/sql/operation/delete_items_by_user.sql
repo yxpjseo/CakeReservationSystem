@@ -1,1 +1,4 @@
-DELETE FROM order_items WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?);
+DELETE oi
+FROM order_items oi
+         JOIN orders o ON oi.order_id = o.order_id
+WHERE o.user_id = ?;
