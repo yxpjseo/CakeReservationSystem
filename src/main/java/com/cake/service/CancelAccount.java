@@ -31,7 +31,7 @@ public class CancelAccount {
             }
         }
 
-        //회원 정보 삭제
+        // 회원 정보 삭제
         conn.setAutoCommit(false);
         try (
                 PreparedStatement deletePickups = conn.prepareStatement(
