@@ -130,7 +130,7 @@ cd [JAR 파일 경로]
 2. 아래 명령어를 입력해 실행합니다:
 
 ```bash
-java -jar CakeReservationSystem-1.0-SNAPSHOT.jar
+java -Dfile.encoding=UTF-8 -jar CakeReservationSystem.jar
 ```
 
 - 실행하면 위 개발용과 동일하게 DB 초기화 및 콘솔 메뉴가 표시됩니다.
