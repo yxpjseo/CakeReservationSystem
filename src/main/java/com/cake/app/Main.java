@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Main {
+    
+    // DB 초기화
     public static void main(String[] args) {
         try (Connection con = DButil.getConnection()) {
             runSQL(con, "sql/schema/dropschema.sql");
@@ -23,6 +25,7 @@ public class Main {
         }
     }
 
+    // 지정된 SQL 파일 읽고 실행
     public static void runSQL(Connection conn, String resourcePath) throws IOException, SQLException {
         InputStream in = Main.class.getClassLoader().getResourceAsStream(resourcePath);
         if (in == null) {

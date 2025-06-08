@@ -1,3 +1,4 @@
+-- 주문 확인 출력
 SELECT
     oi.cake_name,
     oi.count,

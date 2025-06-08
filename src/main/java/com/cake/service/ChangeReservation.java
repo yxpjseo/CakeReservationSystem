@@ -6,7 +6,8 @@ import java.time.*;
 import com.cake.util.SQLLoader;
 
 public class ChangeReservation {
-
+    
+    // 사용자의 모든 예약 현황 조회
     public void showUserReservations(Connection conn, int userId, Scanner scanner) throws SQLException {
         String sql = SQLLoader.load("select_user_reservations.sql");
 
@@ -46,6 +47,7 @@ public class ChangeReservation {
         else if (menu == 2) cancelReservation(conn, scanner);
     }
 
+    // 예약 변경
     public void updateReservation(Connection conn, Scanner scanner) throws SQLException {
         System.out.print("\n주문번호를 입력하세요 >> ");
         int orderId = Integer.parseInt(scanner.nextLine());
@@ -92,6 +94,7 @@ public class ChangeReservation {
         }
     }
 
+    // 특정 주문번호의 내역 상세 화면 출력
     public void showReservationDetail(Connection conn, int orderId) throws SQLException {
         String sql = SQLLoader.load("select_reservation_detail.sql");
 
@@ -129,6 +132,7 @@ public class ChangeReservation {
         }
     }
 
+    // 초 개수 변경
     public void updateCandles(Connection conn, Scanner scanner, int orderId) throws SQLException {
         String sql = SQLLoader.load("select_reservation_detail.sql");
         int currentCandles = -1;
@@ -159,6 +163,7 @@ public class ChangeReservation {
         }
     }
 
+    //예약 취소
     public void cancelReservation(Connection conn, Scanner scanner) throws SQLException {
         System.out.print("\n주문번호를 입력하세요 >> ");
         int orderId = Integer.parseInt(scanner.nextLine());

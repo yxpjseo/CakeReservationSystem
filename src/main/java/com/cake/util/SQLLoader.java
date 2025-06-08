@@ -7,6 +7,7 @@ import java.util.Objects;
 public class SQLLoader {
     private static final String BASE_PATH = "sql/operation/";
 
+    // SQL 쿼리 파일 읽어오기
     public static String load(String fileName) {
         String fullPath = BASE_PATH + fileName;
         try (InputStream in = SQLLoader.class.getClassLoader().getResourceAsStream(fullPath)) {

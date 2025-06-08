@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import com.cake.util.SQLLoader;
 
 public class CheckUserInfo {
+    
+    // 회원 정보 확인
     public void showUserInfo(Connection conn, int userId) {
         String sql = SQLLoader.load("select_user_by_userId.sql");
 

@@ -5,6 +5,8 @@ import java.util.Scanner;
 import com.cake.util.*;
 
 public class CakePopularityBySize {
+    
+    // 사이즈 별 케이크 인기 순위 조회
     public void execute(Scanner sc) {
         System.out.println("\n// 2. 사이즈 별 케이크 인기순위");
         System.out.println("원하시는 size를 입력해주세요.(숫자만 입력)");
