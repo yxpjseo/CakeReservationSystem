@@ -180,20 +180,6 @@ public class CakeReservation {
         }
     }
 
-    //  픽업 시간 중복 확인
-    private boolean isPickupAvailable(String date, int time) {
-        String sql = SQLLoader.load("check_pickup_availability.sql");
-        try (Connection conn = DButil.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, java.sql.Date.valueOf(date));
-            pstmt.setInt(2, time);
-            ResultSet rs = pstmt.executeQuery();
-            return rs.next() && rs.getInt("cnt") == 0;
-        } catch (SQLException e) {
-            return false;
-        }
-    }
-
     // 예약 가능한 시간 반복 입력 (공용 유틸 메서드)
     public static int promptPickupTime(Scanner sc, String date, Connection conn) throws SQLException {
         int time;

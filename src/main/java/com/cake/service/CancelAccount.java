@@ -5,6 +5,8 @@ import java.sql.*;
 import com.cake.util.SQLLoader;
 
 public class CancelAccount {
+    
+    // 회원 탈퇴
     public void deleteUserAccount(Connection conn, Scanner scanner, int userId) throws SQLException {
         System.out.println("\n*회원 탈퇴 시 모든 예약 정보가 삭제되며 복구되지 않습니다.*");
         System.out.print("회원 탈퇴를 진행하시겠습니까? (Y/N) >> ");

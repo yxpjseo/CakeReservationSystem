@@ -8,6 +8,10 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 public class appMain {
+
+
+
+    // 애플리케이션 실행 시 가장 먼저 뜨는 메뉴
     public static void main(String[] args) {
         Main.main(args);
         Scanner sc = new Scanner(System.in);
@@ -54,6 +58,7 @@ public class appMain {
         }
     }
 
+    // 로그인한 사용자에게 보이는 메뉴
     private static void loginMenu(Scanner sc, int userId,
                                   CakeReservation reservation,
                                   CakePopularityBySize popularity,
