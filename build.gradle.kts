@@ -35,3 +35,7 @@ tasks.jar {
             .map { zipTree(it) }
     })
 }
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
