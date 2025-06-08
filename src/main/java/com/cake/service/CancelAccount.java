@@ -11,7 +11,7 @@ public class CancelAccount {
         String confirm = scanner.nextLine().trim().toUpperCase();
         if (!confirm.equals("Y")) return;
 
-        //비밀번호 재확인
+        // 비밀번호 재확인
         System.out.print("비밀번호 4자리를 입력하세요 : ");
         String inputPw = scanner.nextLine().trim();
 
