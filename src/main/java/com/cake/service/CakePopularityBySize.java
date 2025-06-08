@@ -17,7 +17,7 @@ public class CakePopularityBySize {
         try (Connection conn = DButil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, size);
+            pstmt.setInt(1, size); // 앞서 입력받은 사이즈 바인딩
             ResultSet rs = pstmt.executeQuery();
 
             System.out.println("\n[ " + size + "호 케이크 인기순위 ]");
